@@ -1,5 +1,5 @@
 
-# DOCKR STACK LARAVEL 9
+# DOCKER STACK LARAVEL 9
 
 A basic configuration to use laravel 9 with docker, php 8, nginx and postgres.
 
