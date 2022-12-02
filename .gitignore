@@ -1,0 +1,13 @@
+!.gitignore
+
+.env 
+
+src/storage
+
+src/vendor
+
+src/node_modules
+
+src/.env
+
+data

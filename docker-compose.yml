@@ -1,0 +1,66 @@
+version: "3.9"
+
+networks:
+  laravel-backend:
+  laravel-frontend:
+
+volumes: 
+  pg-data:
+  pgadmin-data:
+  
+services:
+  nginx:
+    image: nginx:alpine 
+    ports:
+      - 80:80
+    container_name: nginx-laravel
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/var/www/html
+    depends_on:
+      - blog-app
+    networks: 
+      - laravel-backend
+      - laravel-frontend
+
+  blog-app:
+    build: 
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: blog-app
+    volumes:
+     - ./src:/var/www/html
+    env_file: ./src/.env
+    networks:
+      - laravel-backend
+    
+  postgres: 
+    image: postgres
+    restart: unless-stopped
+    container_name: postgres-laravel
+    ports:
+    - 5432:5432 
+    environment: 
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} 
+    volumes: 
+      - ./data/postgres-data:/var/lib/postgresql/data 
+    networks:
+      - laravel-backend
+ 
+  pgadmin: 
+    image: dpage/pgadmin4 
+    container_name: pgadmin-laravel 
+    restart:  unless-stopped 
+    ports: 
+      - 81:80 
+    environment: 
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD} 
+    volumes: 
+      - ./data/pgadmin-data:/var/lib/pgadmin
+    networks:
+      - laravel-backend
+
