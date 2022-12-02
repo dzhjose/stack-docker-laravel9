@@ -1,7 +1,7 @@
 
 # DOCKER STACK LARAVEL 9
 
-A basic configuration to use laravel 9 with docker, php 8, nginx and postgres.
+A basic configuration to use laravel 9 with docker, PHP 8, Nginx and PostgreSQL.
 
 # COMANDS
 1.- git clone the respository
